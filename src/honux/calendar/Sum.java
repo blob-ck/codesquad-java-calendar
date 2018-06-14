@@ -19,6 +19,7 @@ public class Sum {
 			}
 			calculation(splitedString);
 		}
+		sc.close();
 	}
 
 	public void calculation(String[] splitedString) {
