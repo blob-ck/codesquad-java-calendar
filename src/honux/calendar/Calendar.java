@@ -41,18 +41,19 @@ public class Calendar {
 		//메소드 만들어 사용해보기
 		
 		Scanner sc = new Scanner(System.in);
-		System.out.println("연도를 입력하세요");
-		System.out.println("달을 입력하세요.(1~12)");
-		int inputYear = sc.nextInt();
-		int inputMonth = sc.nextInt();
+		System.out.println("반복할 횟수를 입력하세요");
+		int repeat = sc.nextInt();
 		Calendar cal = new Calendar();
-		/*if(inputYear % 4 == 0 && inputMonth == 2) {
-			System.out.println(inputMonth + "월은 29일 까지 있습니다.");
-		}else {
-			//System.out.println(inputMonth + "월은 " + month[inputMonth-1] + "일 까지 있습니다.");
-			System.out.printf("%d월은 %d일 까지 있습니다. \n", inputMonth, month[inputMonth-1] );
-		}*/
-		System.out.printf("%d년 %d월은 %d일 까지 있습니다. \n", inputYear, inputMonth, cal.maxDayOfMonth(inputYear, inputMonth));
+		
+		//n번 반복하도록 바꾸기
+		for (int i = 0; i < repeat; i++) {
+			System.out.println("연도를 입력하세요");
+			int inputYear = sc.nextInt();
+			System.out.println("달을 입력하세요.(1~12)");
+			int inputMonth = sc.nextInt();
+			System.out.printf("%d년 %d월은 %d일 까지 있습니다. \n", inputYear, inputMonth, cal.maxDayOfMonth(inputYear, inputMonth));
+		}
+		System.out.println("종료합니다");
 		sc.close();
 		
 		
