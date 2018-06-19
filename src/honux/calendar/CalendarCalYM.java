@@ -4,17 +4,17 @@ import java.util.Scanner;
 
 public class CalendarCalYM {
 	//연 월 입력받고 바로직전월까지의 총 일수를 계산하여 
-	//해당월의 배열에 날짜를 반복문으로 입력하고, 
-	
-	
+	//7로 나눈 나머지만큼 출력할 배열의 시작일 앞에 0을 입력하여 달력모양을 만든다
+	//반복문으로 출력
 	
 	private final int[] MAX_DAYS = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	private ArrayList<Integer> monthDays = new ArrayList<Integer>();
 	
-	public void calMaxTotalDays(int year, int month) {
+	
+	public void out(int year, int month) {
 		
 		boolean yoondal = false;
-		//if(year % 4 == 0 && year % 100 != 0 && year % 400 ==0) {
+		//윤달 판별
 		if(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
 			yoondal = true;
 		}
@@ -39,15 +39,11 @@ public class CalendarCalYM {
 			}
 		}
 		
-		
 		// - 4의 배수이고 100의 배수가 아니고 400의 배수인 연도이고 2월을 입력하면 윤달로 출력(29일)
 		if(month == 2 && yoondal) {
 			monthDays.add(monthDays.size(), 29);
 		}
 		
-		/*for (int i = 0; i < monthDays.size(); i++) {
-			System.out.println(monthDays.get(i));
-		}*/
 		String s = "\t\t<< " + year + "년  " + month + "월 >>\n";
 		s += " 일\t월\t화\t수\t목\t금\t토\n---------------------------------------------------\n";
 		for (int i = 1; i <= monthDays.size(); i++) {
@@ -63,27 +59,13 @@ public class CalendarCalYM {
 				s += "\r";
 			}
 		}
-		System.out.println(s);
+		System.out.println(s + "\n");
 	}
-	
-	public void prompt(String ms0, String ms1) {
-		System.out.println(ms0);
-		System.out.println(ms1);
-		System.out.println("cal> ");
-	}
-	
-	
-	public final String ms0 = "종료 : -1 입력";
-	public final String ms1 = "연도를 입력하세요. (양수)";
-	public final String ms2 = "월을 입력하세요. (1~12)";
-	public final String ms3 = "종료합니다.";
 
-	
 	
 	
 	//메인에서 호출되는 메소드
 	public void cal() {
-		
 		
 		/* 연을 입력하고
 		 * 월을 입력하면 해당월의 달력을 출력한다 - 4의 배수 연도이고 2월을 출력하면 윤달 출력(29일)
@@ -91,10 +73,7 @@ public class CalendarCalYM {
 		 * 프롬프트로 출력한다
 		*/
 		
-		//연을 입력하고
 		Scanner sc = new Scanner(System.in);
-		
-		//프롬프트로 출력한다
 	
 		while(true) {
 				
@@ -102,12 +81,13 @@ public class CalendarCalYM {
 				monthDays.clear();
 			}
 			
-			prompt(ms0, ms1);
+			System.out.println("연도를 입력하세요. (exit : -1 입력)");
+			System.out.print("YEAR > ");
 			
 			int year = sc.nextInt();
 			
 			if(year == -1) {
-				System.out.println(ms3);
+				System.out.println("종료합니다.");
 				sc.close();
 				return;
 			}else if(year < 0) {
@@ -116,12 +96,11 @@ public class CalendarCalYM {
 				break;
 			}
 			
-			//월을 입력하면 해당월의 달력을 출력한다
-			prompt(ms0, ms2);
+			System.out.println("월을 입력하세요. (exit : -1 입력)");
+			System.out.print("MONTH > ");
 			int month = sc.nextInt();
-			//연이나 월에 -1을 입력하면 종료한다
 			if(month == -1) {
-				System.out.println(ms3);
+				System.out.println("종료합니다.");
 				sc.close();
 				return;
 			}else if(month < 0 || month >12) {
@@ -130,12 +109,11 @@ public class CalendarCalYM {
 				break;
 			}
 		
-			calMaxTotalDays(year, month);
+			out(year, month);
 			
 		
 		} //while end
 		
-		//잊지말고 스캐너 닫아준다
 		sc.close();
 		
 	} // cal() end
