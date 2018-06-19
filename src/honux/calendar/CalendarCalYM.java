@@ -48,7 +48,8 @@ public class CalendarCalYM {
 		/*for (int i = 0; i < monthDays.size(); i++) {
 			System.out.println(monthDays.get(i));
 		}*/
-		String s = " 일\t월\t화\t수\t목\t금\t토\n---------------------------------------------------\n";
+		String s = "\t\t<< " + year + "년  " + month + "월 >>\n";
+		s += " 일\t월\t화\t수\t목\t금\t토\n---------------------------------------------------\n";
 		for (int i = 1; i <= monthDays.size(); i++) {
 			if (monthDays.get(i-1) < 10) {
 				s += " ";
