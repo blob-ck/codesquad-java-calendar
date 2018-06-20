@@ -2,6 +2,8 @@ package honux.calendar;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
+//연 월 입력받고 달력 출력하는 클래스
 public class CalendarCalYM {
 	//연 월 입력받고 바로직전월까지의 총 일수를 계산하여 
 	//7로 나눈 나머지만큼 출력할 배열의 시작일 앞에 0을 입력하여 달력모양을 만든다
@@ -45,7 +47,8 @@ public class CalendarCalYM {
 		}
 		
 		String s = "\t\t<< " + year + "년  " + month + "월 >>\n";
-		s += " 일\t월\t화\t수\t목\t금\t토\n---------------------------------------------------\n";
+		s += " 일\t월\t화\t수\t목\t금\t토\n"
+		    +"---------------------------------------------------\n";
 		for (int i = 1; i <= monthDays.size(); i++) {
 			if (monthDays.get(i-1) < 10) {
 				s += " ";
@@ -65,7 +68,7 @@ public class CalendarCalYM {
 	
 	
 	//메인에서 호출되는 메소드
-	public void cal() {
+	public void cal(Scanner sc) {
 		
 		/* 연을 입력하고
 		 * 월을 입력하면 해당월의 달력을 출력한다 - 4의 배수 연도이고 2월을 출력하면 윤달 출력(29일)
@@ -73,7 +76,8 @@ public class CalendarCalYM {
 		 * 프롬프트로 출력한다
 		*/
 		
-		Scanner sc = new Scanner(System.in);
+		//스캐너를 하나만 생성하도록 하기위해 매개변수로 받아와서 사용한다
+		//Scanner sc = new Scanner(System.in);
 	
 		while(true) {
 				
@@ -88,11 +92,11 @@ public class CalendarCalYM {
 			
 			if(year == -1) {
 				System.out.println("종료합니다.");
-				sc.close();
+				//sc.close();
 				return;
 			}else if(year < 0) {
 				System.out.println("양수를 입력하세요");
-				cal();
+				cal(sc);
 				break;
 			}
 			
@@ -101,11 +105,11 @@ public class CalendarCalYM {
 			int month = sc.nextInt();
 			if(month == -1) {
 				System.out.println("종료합니다.");
-				sc.close();
+				//sc.close();
 				return;
 			}else if(month < 0 || month >12) {
 				System.out.println("1~12 사이의 숫자를 입력하세요");
-				cal();
+				cal(sc);
 				break;
 			}
 		
@@ -114,7 +118,7 @@ public class CalendarCalYM {
 		
 		} //while end
 		
-		sc.close();
+		//sc.close();
 		
 	} // cal() end
 }
