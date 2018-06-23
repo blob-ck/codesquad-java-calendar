@@ -1,8 +1,9 @@
 package honux.calendar;
 
+
 public class CalendarMain {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 
 		//연 월 입력받고 달력 출력하는 클래스

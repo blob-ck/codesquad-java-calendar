@@ -1,4 +1,8 @@
 package honux.calendar;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -6,14 +10,25 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class CalendarCmd {
+//콘솔에 출력하던걸 파일로 저장하여 관리하도록 바꾼 클래스
+public class CalendarFile {
 
 	private final int[] MAX_DAYS = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	private ArrayList<Integer> monthDays = new ArrayList<Integer>();
-	private HashMap<Date, String> planMap;
+	//private HashMap<Date, String> planMap;
+	private HashMap<String, String> planMap;
 	
-	public CalendarCmd() {
-		planMap = new HashMap<Date, String>();
+	//워크스페이스에 텍스트파일이 생성되는걸 보면 상대경로인듯 (앞에 아무런 경로를 적지 않았을때)
+	private final String fileLocate = "plan.txt";
+	
+	public CalendarFile() {
+
+		planMap = new HashMap<String, String>();
+		File f = new File(fileLocate);
+		if(!f.exists()) {
+			System.err.println("File does not exists.");
+			return;
+		}
 	}
 	
 	//일정 검색
@@ -23,23 +38,39 @@ public class CalendarCmd {
 		System.out.print("DATE > ");
 		String strDate = scn.next();
 		try {
-			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
-			System.out.println(date + "일정은 ");
-			if(planMap.get(date) == null || planMap.get(date).equals(null)) {
-				System.out.println("등록되지 않았습니다.");
-			}else {
-				System.out.println(planMap.get(date) + "입니다.");
+			@SuppressWarnings("unused")
+			Date d = new SimpleDateFormat("yyyy-MM-dd").parse(strDate); // yyyy-MM-dd 포맷에 맞춰 키를 입력했는지 try/catch로 거르려고 그냥 놔뒀다.
+			File f = new File(fileLocate);
+			Scanner sc;
+			try {
+				sc = new Scanner(f);
+				while(sc.hasNext()) {
+					String[] line = sc.nextLine().split(" , ");
+					planMap.put(line[0], line[1]);
+				}
+				boolean exist = false;
+				for (String s : planMap.keySet()) {
+					
+					if(strDate.equals(s)) {
+						System.out.println(s + "의 일정은 " + planMap.get(s) +" 입니다.");
+						exist = true;
+					}
+				}
+				if(!exist) {
+					System.out.println("일정이 존재하지 않습니다.");
+				}
+				sc.close();
+			} catch (FileNotFoundException e) {
+				System.out.println("등록된 일정이 없습니다.");
 			}
 		} catch (ParseException e) {
-			System.out.println("yyyy-MM-dd 양식으로 날짜를 입력하세요");
+			System.err.println("\r\n yyyy-MM-dd 양식으로 날짜를 입력하세요");
 			cmdSearch(scn);
 		}
-		
-		
 	} // cmdSerch() end
 	
 	//일정 등록
-	public void cmdRegister(Scanner scn) {
+	public void cmdRegister(Scanner scn) throws FileNotFoundException {
 		System.out.println("[일정 등록]");
 		System.out.println("날짜를 입력해 주세요. (yyyy-MM-dd)");
 		System.out.print("DATE > ");
@@ -51,7 +82,7 @@ public class CalendarCmd {
 			if(plan.equals("")) {
 				plan += scn.nextLine();
 			}else {
-				plan += "\r\n" + scn.nextLine();
+				plan += " " + scn.nextLine();
 			}
 		}
 		//세미콜론 제거
@@ -64,10 +95,16 @@ public class CalendarCmd {
 		}
 	} // cmdRegister() end
 	
-	public void registerPlan(String strDate, String plan) throws ParseException {
-			Date d = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
-			planMap.put(d, plan);
-			System.out.println(d + "\r\n일정은 " + planMap.get(d));
+	public void registerPlan(String strDate, String plan) throws ParseException, FileNotFoundException {
+		
+		try {
+			FileWriter f = new FileWriter(fileLocate, true); //  true : 파일이 존재할 때 새로 생성하여 덮어씌우지 않고 기존파일에 내용을 덧붙인다.
+			f.write(strDate + " , " + plan + "\r\n");
+			f.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(strDate + "\r\n일정은 " + plan);
 	}
 	
 	//도움말
